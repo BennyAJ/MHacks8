@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_2);
 
-//        toolbar = (Toolbar) findViewById(R.id.main_tool_bar);
-//        setSupportActionBar(toolbar);
+        //toolbar = (Toolbar) findViewById(R.id.main_tool_bar);
+        //setSupportActionBar(toolbar);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.main_left_menu);
         mRecyclerView.setHasFixedSize(true);

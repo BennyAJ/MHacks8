@@ -10,17 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/main_tool_bar"
-            layout="@layout/tool_bar"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </include>
-
         <FrameLayout
             android:id="@+id/main_content_frame"
-            android:layout_below="@id/main_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>
