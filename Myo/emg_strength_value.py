@@ -31,24 +31,32 @@ if __name__ == '__main__':
     try:
 
         peaks = []
+        strength = 0
         for i in range(0, 7):
-            peaks.append(i)
+            peaks.append(0)
 
         start_time = time.time()
         print(start_time)
         print("Gathering Data")
         
+        samples = 0
+        
         while time.time() < (start_time + 3):
             m.run()
+            samples = samples + 1
             for i in range(0, 7):
-                if hnd.emg[i] > peaks[i]:
-                    peaks[i] = hnd.emg[i]
+                peaks[i] = peaks[i] + hnd.emg[i]
         
-        print(peaks)
+        for i in range(0, 7):
+            peaks[i] = peaks[i] / samples
+            strength = strength + peaks[i]
+
+        strength = strength / 8
+        print(strength)
             
 
     except KeyboardInterrupt:
         pass
     finally:
-        m.disconnect()
+        #m.disconnect()
         print()
