@@ -5,7 +5,7 @@
               android:background="@color/ColorBackground"
               android:orientation="vertical">
 
-    <it.ncorti.emgvisualizer.ui.views.SensorGraphView
+    <emgvisualizer.ui.views.SensorGraphView
         android:id="@+id/graph_sensorgraphview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
