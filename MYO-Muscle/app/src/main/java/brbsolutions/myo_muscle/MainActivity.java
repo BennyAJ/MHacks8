@@ -9,12 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Button;
 import android.view.View;
-import android.content.Intent;
-import android.util.Log;
-import android.bluetooth.*;
-import android.bluetooth.le.BluetoothLeScanner;
 
 import com.squareup.otto.Subscribe;
 
