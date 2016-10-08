@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
             "Home",
             "Thalmic Myo",
             "Search for Myo",
-            "Control panel",
-            "Graph viewer"};
+            "Run Test",
+            "View History"};
 
     /** Array of icons reference ID, -1 if a divider */
     private int ICONS[] = {

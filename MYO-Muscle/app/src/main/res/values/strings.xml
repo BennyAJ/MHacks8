@@ -10,8 +10,8 @@
 
     <string name="action_pause">Pause</string>
     <string name="action_play">Play</string>
-    <string name="header_app_firstname">Myo EMG</string>
-    <string name="header_app_secondname">Graphic Visualizer</string>
+    <string name="header_app_firstname">Myo-Muscle</string>
+    <string name="header_app_secondname">Powered by Myo EMG</string>
     <string name="openDrawer">Open the navigation drawer</string>
     <string name="closeDrawer">Close the navigation drawer</string>
     <string name="connect">Connect</string>
@@ -27,7 +27,7 @@
     <string name="no">No</string>
     <string name="tutorial_menu">Press this button to open menu</string>
     <string name="disclaimer">To use this app you need a Myo</string>
-    <string name="description">You can use this app to visualize raw EMG data from a Myo device. If you find a bug, feel free to report it :)</string>
-    <string name="author">Nicola Corti</string>
+    <string name="description">This app will help you track the strength of your muscles over time. Thanks to Nicola Corti for the foundations of the code! - BRBA</string>
+    <string name="author"></string>
     <string name="source_code">To access the source code press here</string>
 </resources>
