@@ -25,9 +25,11 @@
     <string name="you_must_perform_a_scan">You haven\'t already found a Myo, you must first perform a device scan. Do it now?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="tutorial_menu">Press this button to open menu</string>
-    <string name="disclaimer">To use this app you need a Myo</string>
+    <string name="tutorial_menu">Swipe Right From the Edge to Access Menu</string>
+    <string name="disclaimer">To use this app you need a Myo Arm Band</string>
     <string name="description">This app will help you track the strength of your muscles over time. Thanks to Nicola Corti for the foundations of the code! - BRBA</string>
+    <string name="instructions">Your Myo arm band is now active. To record data, clench a fist or squeeze a tube as hard as you can.
+        As soon as Myo Muscle registers the motioon, it will begin to record data. Let go after about 5 seconds to finish a session.</string>
     <string name="author"></string>
     <string name="source_code">To access the source code press here</string>
 </resources>
