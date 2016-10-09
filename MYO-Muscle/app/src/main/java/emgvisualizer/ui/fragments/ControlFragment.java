@@ -31,6 +31,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.squareup.otto.Subscribe;
 
 import brbsolutions.myo_muscle.R;
@@ -83,7 +86,7 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
         btnConnection = (Button) view.findViewById(R.id.control_btn_connect);
         txtSensorName = (TextView) view.findViewById(R.id.control_sensor_name);
         txtSensorStatus = (TextView) view.findViewById(R.id.control_sensor_status);
-        swcStream = (CompoundButton ) view.findViewById(R.id.control_swc_stream);
+        swcStream = (CompoundButton  ) view.findViewById(R.id.control_swc_stream);
         swcStream.setOnCheckedChangeListener(this);
 
         txtSensorName.setText(controlledSensor.getName());
@@ -91,6 +94,7 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
 
         btnConnection.setOnClickListener(this);
         setButtonConnect(controlledSensor.isConnected());
+
         return view;
     }
 
@@ -183,11 +187,6 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
 
     @Override
     public void onCheckedChanged(CompoundButton swcStream, boolean b) {
-        if (swcStream.getId() == R.id.control_swc_stream) {
-            if (b)
-                controlledSensor.startMeasurement();
-            else
-                controlledSensor.stopMeasurement();
-        }
+        controlledSensor.startMeasurement();
     }
 }

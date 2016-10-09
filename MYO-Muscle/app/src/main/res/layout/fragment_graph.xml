@@ -14,6 +14,14 @@
         android:elevation="16dp"
         android:visibility="gone"/>
 
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/line_graph"
+        android:elevation="16dp"
+        android:layout_margin="10dp"
+        android:background="@color/ColorBackground"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/graph_error_view"

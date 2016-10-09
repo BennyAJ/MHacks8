@@ -1,8 +1,11 @@
 package brbsolutions.myo_muscle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -20,7 +23,7 @@ import emgvisualizer.ui.MySensorManager;
  * Created by Benny on 10/8/16.
  */
 
-public class Data_Handler {
+public class Data_Handler extends AppCompatActivity{
 
     private Sensor sensor;
 
@@ -73,7 +76,8 @@ public class Data_Handler {
                     Trial[] tempTrial = {new Trial(0, rawData)};
                     ArrayList<RawDataPoint> printList = new ArrayList<RawDataPoint>(Arrays.asList(rawData));
                     RawDataPoint.printList(printList);
-                    databaseHelper.storeSession(packageSessionData(0, tempTrial));
+
+                    //databaseHelper.storeSession(packageSessionData(0, tempTrial));
                 }
             }
         };
@@ -87,9 +91,11 @@ public class Data_Handler {
     public void onSensorUpdatedEvent(SensorUpdateEvent event) {
         if (!event.getSensor().getName().contentEquals(sensor.getName())) return;
         this.currentPoint = event.getDataPoint();
-        Log.d("Is this even polling?", "SI POOP");
+        for(int i = 0; i < currentPoint.getValues().length; i++) {
+            //Log.d("SI POOP:", String.valueOf(currentPoint.getValues()[i]));
+        }
         if (currentPoint == null) {
-            Log.d("Null?", "YES BOOTY");
+            //Log.d("Null?", "YES BOOTY");
         }
     }
 
@@ -114,13 +120,34 @@ public class Data_Handler {
         handler.post(dataCollector);
         // Reset elapsed time when data is done collecting
         elapsedTime = 0;
+        //email(new Trial(0, rawData));
         return (new Trial(0, rawData));
     }
+
+    /*//Sends an email report to a doctor upon collection of data
+    public void email(Trial data){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"roshinan@yahoo.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Myo Muscle Report");
+        i.putExtra(Intent.EXTRA_TEXT, data.to_string());
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        }catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(Data_Handler.this, "There are no email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+        return;
+    } */
 
     public Session packageSessionData(int routine, Trial[] trials) {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
         return (new Session(day, month, year, 0, trials));
+    }
+
+    public RawDataPoint getCurrentPoint() {
+        return currentPoint;
     }
 }
