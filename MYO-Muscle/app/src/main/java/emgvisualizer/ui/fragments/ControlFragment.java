@@ -83,7 +83,7 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
         btnConnection = (Button) view.findViewById(R.id.control_btn_connect);
         txtSensorName = (TextView) view.findViewById(R.id.control_sensor_name);
         txtSensorStatus = (TextView) view.findViewById(R.id.control_sensor_status);
-        swcStream = (CompoundButton ) view.findViewById(R.id.control_swc_stream);
+        swcStream = (CompoundButton  ) view.findViewById(R.id.control_swc_stream);
         swcStream.setOnCheckedChangeListener(this);
 
         txtSensorName.setText(controlledSensor.getName());

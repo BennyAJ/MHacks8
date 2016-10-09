@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':graphview', ':GraphView-4.2.1'
 project(':app').projectDir = new File('MYO-Muscle/app')
