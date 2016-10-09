@@ -1,9 +1,12 @@
 package brbsolutions.myo_muscle;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
 import com.squareup.otto.Subscribe;
+
+import java.util.Calendar;
 
 import emgvisualizer.model.RawDataPoint;
 import emgvisualizer.model.Sensor;
@@ -33,10 +36,19 @@ public class Data_Handler {
     private int elapsedTime;
     private int collectionTime;
 
+    private Context context;
+    private DatabaseHelper databaseHelper;
+    private Calendar calendar;
+
     // General class for processing and saving data from the myo armband
-    public Data_Handler() {
+    public Data_Handler(Context context) {
         this.sensor = MySensorManager.getInstance().getMyo();
         this.handler = new Handler();
+
+        this.context = context;
+
+        databaseHelper = new DatabaseHelper(context);
+        calendar = Calendar.getInstance();
 
         elapsedTime = 0;
 
@@ -76,7 +88,7 @@ public class Data_Handler {
     }
 
     // Runs dataCollector for milliseconds and returns an array of the samples taken
-    public RawDataPoint[] collectData(int milliseconds, int sampleDelay) {
+    public Trial collectData(int milliseconds, int sampleDelay) {
         this.collectionTime = milliseconds;
         this.sampleDelay = sampleDelay;
 
@@ -87,6 +99,13 @@ public class Data_Handler {
         handler.post(dataCollector);
         // Reset elapsed time when data is done collecting
         elapsedTime = 0;
-        return rawData;
+        return (new Trial(0, rawData));
+    }
+
+    public Session packageSessionData(Routine routine, Trial[] trials) {
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        return (new Session(day, month, year, 0, trials));
     }
 }

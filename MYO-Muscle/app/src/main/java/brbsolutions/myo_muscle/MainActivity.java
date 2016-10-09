@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
                 } else {
                     fragment = new GraphFragment();
-                    data_handler = new Data_Handler();
+                    data_handler = new Data_Handler(this);
                     EventBusProvider.register(data_handler);
                 }
                 break;
