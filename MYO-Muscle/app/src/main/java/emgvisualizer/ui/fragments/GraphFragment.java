@@ -257,7 +257,8 @@ public class GraphFragment extends Fragment {
                                 handler.postDelayed(this, FRAMERATE_SKIP_MS);
                             last = actual;
                             elapsedTime += sampleDelay;
-                            if(elapsedTime >= collectionTime) {
+                            // Divide by 2/3 because it looks better
+                            if(elapsedTime >= (collectionTime * (.63f))) {
                                 graph.setRunning(false);
                                 handler.removeCallbacks(runner);
                                 elapsedTime = 0;
