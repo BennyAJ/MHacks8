@@ -117,11 +117,11 @@ public class Data_Handler extends AppCompatActivity{
         handler.post(dataCollector);
         // Reset elapsed time when data is done collecting
         elapsedTime = 0;
-        email(new Trial(0, rawData));
+        //email(new Trial(0, rawData));
         return (new Trial(0, rawData));
     }
 
-    //Sends an email report to a doctor upon collection of data
+    /*//Sends an email report to a doctor upon collection of data
     public void email(Trial data){
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
@@ -135,7 +135,7 @@ public class Data_Handler extends AppCompatActivity{
                     Toast.LENGTH_SHORT).show();
         }
         return;
-    }
+    } */
 
     public Session packageSessionData(int routine, Trial[] trials) {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
