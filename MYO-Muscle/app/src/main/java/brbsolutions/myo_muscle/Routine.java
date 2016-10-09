@@ -1,6 +1,11 @@
 package brbsolutions.myo_muscle;
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * Created by Alex on 10/8/2016.
@@ -39,5 +44,41 @@ public class Routine {
     public int getStepLength(int index){
         String exploded[] = name.split(";");
         return Integer.parseInt(exploded[index].split(":")[1]);
+    }
+
+    public LinearLayout getLayout(Context context){
+        LinearLayout layout = new LinearLayout(context);
+
+        ((Activity) context).getLayoutInflater().inflate(R.layout.layout_routine, layout);
+
+        ((TextView) layout.findViewById(R.id.routine_title_target)).setText(name);
+
+        if(steps == 1) {
+            ((TextView) layout.findViewById(R.id.routine_step_target)).setText("1 Step");
+        }else{
+            ((TextView) layout.findViewById(R.id.routine_step_target)).setText(String.valueOf(steps) + " Steps");
+        }
+
+        DatabaseHelper dbh = new DatabaseHelper(context);
+        SQLiteDatabase db = dbh.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT COUNT(" + SessionContract.SessionEntry.column_routine +
+                                                " == " + String.valueOf(id) + ")", null);
+        c.moveToFirst();
+        int sessions = c.getInt(0);
+
+
+        if(steps == 1) {
+            ((TextView) layout.findViewById(R.id.routine_step_target)).setText("1 Step");
+        }else{
+            ((TextView) layout.findViewById(R.id.routine_step_target)).setText(String.valueOf(steps) + " Steps");
+        }
+
+        if(sessions == 1) {
+            ((TextView) layout.findViewById(R.id.routine_trial_target)).setText("1 Session completed");
+        }else{
+            ((TextView) layout.findViewById(R.id.routine_trial_target)).setText(String.valueOf(steps) + " Sessions completed");
+        }
+
+        return layout;
     }
 }

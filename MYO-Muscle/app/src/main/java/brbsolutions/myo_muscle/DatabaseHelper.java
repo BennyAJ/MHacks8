@@ -15,7 +15,7 @@ import emgvisualizer.model.RawDataPoint;
  * Created by Alex on 10/8/2016.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int database_version = 1;
+    public static final int database_version = 2;
     public static final String database_file = "myo.db";
 
     public DatabaseHelper(Context context){
@@ -28,6 +28,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DataPointContract.init_table);
         db.execSQL(RoutineContract.init_table);
         db.execSQL(SessionContract.init_table);
+
+        Routine hackerTests = new Routine("Hacker Ergonomics", "Clench fist:3", 1);
+        storeRoutine(hackerTests);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){

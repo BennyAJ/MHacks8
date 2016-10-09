@@ -1,6 +1,10 @@
 package brbsolutions.myo_muscle;
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -44,5 +48,16 @@ public class Session {
     public String to_string(){
         return "(Session) day = " + String.valueOf(day) + " month = " + String.valueOf(month) +
                 " year = " + year + " routine = " + routine + "\n";
+    }
+
+    LinearLayout getLayout(Context context){
+        LinearLayout layout = new LinearLayout(context);
+
+        ((Activity) context).getLayoutInflater().inflate(R.layout.layout_session, layout);
+
+        ((TextView) layout.findViewById(R.id.session_date_target)).setText(String.valueOf(month) + "/" +
+            String.valueOf(day) + "/" + String.valueOf(year));
+
+        return layout;
     }
 }
