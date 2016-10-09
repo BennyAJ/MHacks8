@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     /** REMOVE THIS LATER */
     private Data_Handler data_handler;
-    private DatabaseHelper databaseHelper;
     /** App Toolbar */
     private Toolbar toolbar;
     /** Recycler view reference */
@@ -219,8 +218,6 @@ public class MainActivity extends AppCompatActivity {
                     data_handler = new Data_Handler(this);
                     EventBusProvider.register(data_handler);
                     Trial[] tempTrials = {data_handler.collectData(3000, 50)};
-                    databaseHelper = new DatabaseHelper(this);
-                    databaseHelper.storeSession(data_handler.packageSessionData(0, tempTrials));
 
                 }
                 break;

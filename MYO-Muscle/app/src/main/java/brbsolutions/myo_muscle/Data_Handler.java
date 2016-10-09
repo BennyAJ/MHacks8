@@ -6,7 +6,10 @@ import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import emgvisualizer.model.RawDataPoint;
 import emgvisualizer.model.Sensor;
@@ -63,8 +66,15 @@ public class Data_Handler {
 
                 // Add to elapsedTime and repeat if needed
                 elapsedTime += sampleDelay;
-                if (elapsedTime < collectionTime)
+                if (elapsedTime < collectionTime) {
                     handler.postDelayed(dataCollector, sampleDelay);
+                }
+                else {
+                    Trial[] tempTrial = {new Trial(0, rawData)};
+                    ArrayList<RawDataPoint> printList = new ArrayList<RawDataPoint>(Arrays.asList(rawData));
+                    RawDataPoint.printList(printList);
+                    databaseHelper.storeSession(packageSessionData(0, tempTrial));
+                }
             }
         };
 
@@ -77,6 +87,10 @@ public class Data_Handler {
     public void onSensorUpdatedEvent(SensorUpdateEvent event) {
         if (!event.getSensor().getName().contentEquals(sensor.getName())) return;
         this.currentPoint = event.getDataPoint();
+        Log.d("Is this even polling?", "SI POOP");
+        if (currentPoint == null) {
+            Log.d("Null?", "YES BOOTY");
+        }
     }
 
     public static float getAverageMagnitude(float[] values) {
