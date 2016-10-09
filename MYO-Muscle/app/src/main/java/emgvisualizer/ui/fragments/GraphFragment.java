@@ -34,6 +34,7 @@ import com.squareup.otto.Subscribe;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 
+import brbsolutions.myo_muscle.Data_Handler;
 import brbsolutions.myo_muscle.R;
 import emgvisualizer.model.EventBusProvider;
 import emgvisualizer.model.RawDataPoint;
@@ -74,6 +75,12 @@ public class GraphFragment extends Fragment {
     /** Array of normalized points */
     private float[] normalized;
 
+    private Data_Handler data_handler = new Data_Handler(getActivity());
+    private final float triggerAmplitude = 80;
+    private final int collectionTime = 3000;
+    private final int sampleDelay = 50;
+    private boolean triggered = false;
+
 
     /**
      * Public constructor to create a new  GraphFragment
@@ -81,6 +88,7 @@ public class GraphFragment extends Fragment {
     public GraphFragment() {
         this.sensor = MySensorManager.getInstance().getMyo();
         this.normalized = new float[sensor.getChannels()];
+        EventBusProvider.register(data_handler);
     }
 
     @Override
@@ -202,9 +210,23 @@ public class GraphFragment extends Fragment {
     public void onSensorUpdatedEvent(SensorUpdateEvent event) {
         if (!event.getSensor().getName().contentEquals(sensor.getName())) return;
         for (int i = 0; i < sensor.getChannels(); i++) {
-            normalized[i] = (event.getDataPoint().getValues()[i] - sensor.getMinValue()) / spread;
+            if(data_handler.getCurrentPoint() != null)
+                normalized[i] = data_handler.getCurrentPoint().getValues()[i];
+            else
+                normalized[i] = 0;
+            if(!triggered) {
+                Log.d("FOODOO",String.valueOf(normalized[i]));
+                if (normalized[i] > triggerAmplitude) {
+                    triggered = true;
+                    data_handler.collectData(collectionTime, sampleDelay);
+                    Log.d("TRIGGER WARNING:", String.valueOf(triggered));
+                }
+            }
         }
-        this.graph.addNewDataPoint(normalized);
+        // Maybe fix this later if I have time
+        //if(triggered) {
+        //    this.graph.addNewDataPoint(normalized);
+        //}
     }
 
     /**

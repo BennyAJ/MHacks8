@@ -73,7 +73,7 @@ public class Data_Handler {
                     Trial[] tempTrial = {new Trial(0, rawData)};
                     ArrayList<RawDataPoint> printList = new ArrayList<RawDataPoint>(Arrays.asList(rawData));
                     RawDataPoint.printList(printList);
-                    databaseHelper.storeSession(packageSessionData(0, tempTrial));
+                    //databaseHelper.storeSession(packageSessionData(0, tempTrial));
                 }
             }
         };
@@ -87,9 +87,11 @@ public class Data_Handler {
     public void onSensorUpdatedEvent(SensorUpdateEvent event) {
         if (!event.getSensor().getName().contentEquals(sensor.getName())) return;
         this.currentPoint = event.getDataPoint();
-        Log.d("Is this even polling?", "SI POOP");
+        for(int i = 0; i < currentPoint.getValues().length; i++) {
+            //Log.d("SI POOP:", String.valueOf(currentPoint.getValues()[i]));
+        }
         if (currentPoint == null) {
-            Log.d("Null?", "YES BOOTY");
+            //Log.d("Null?", "YES BOOTY");
         }
     }
 
@@ -122,5 +124,9 @@ public class Data_Handler {
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
         return (new Session(day, month, year, 0, trials));
+    }
+
+    public RawDataPoint getCurrentPoint() {
+        return currentPoint;
     }
 }

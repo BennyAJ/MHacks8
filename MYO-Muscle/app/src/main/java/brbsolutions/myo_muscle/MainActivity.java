@@ -215,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // Benny's messy stuff
                     fragment = new GraphFragment();
-                    data_handler = new Data_Handler(this);
-                    EventBusProvider.register(data_handler);
-                    Trial[] tempTrials = {data_handler.collectData(3000, 50)};
+                    //data_handler = new Data_Handler(this);
+                    //EventBusProvider.register(data_handler);
+                    //Trial[] tempTrials = {data_handler.collectData(3000, 50)};
 
                 }
                 break;
