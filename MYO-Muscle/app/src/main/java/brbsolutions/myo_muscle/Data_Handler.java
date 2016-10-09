@@ -102,7 +102,7 @@ public class Data_Handler {
         return (new Trial(0, rawData));
     }
 
-    public Session packageSessionData(Routine routine, Trial[] trials) {
+    public Session packageSessionData(int routine, Trial[] trials) {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);

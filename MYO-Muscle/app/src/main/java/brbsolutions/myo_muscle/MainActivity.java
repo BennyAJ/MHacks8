@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** REMOVE THIS LATER */
     private Data_Handler data_handler;
+    private DatabaseHelper databaseHelper;
     /** App Toolbar */
     private Toolbar toolbar;
     /** Recycler view reference */
@@ -205,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
                 } else {
                     fragment = new ControlFragment();
-                    /** DELETE THIS LATER */
 
                 }
                 break;
@@ -214,9 +214,13 @@ public class MainActivity extends AppCompatActivity {
                     fragment = null;
                     alert.show();
                 } else {
+                    // Benny's messy stuff
                     fragment = new GraphFragment();
                     data_handler = new Data_Handler(this);
                     EventBusProvider.register(data_handler);
+                    Trial[] tempTrials = {data_handler.collectData(3000, 50)};
+                    databaseHelper.storeSession(data_handler.packageSessionData(0, tempTrials));
+
                 }
                 break;
         }
