@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     data_handler = new Data_Handler(this);
                     EventBusProvider.register(data_handler);
                     Trial[] tempTrials = {data_handler.collectData(3000, 50)};
+                    databaseHelper = new DatabaseHelper(this);
                     databaseHelper.storeSession(data_handler.packageSessionData(0, tempTrials));
 
                 }
