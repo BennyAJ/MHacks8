@@ -205,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
                 } else {
                     fragment = new ControlFragment();
-                    /** DELETE THIS LATER */
 
                 }
                 break;
@@ -214,9 +213,12 @@ public class MainActivity extends AppCompatActivity {
                     fragment = null;
                     alert.show();
                 } else {
+                    // Benny's messy stuff
                     fragment = new GraphFragment();
-                    data_handler = new Data_Handler();
+                    data_handler = new Data_Handler(this);
                     EventBusProvider.register(data_handler);
+                    Trial[] tempTrials = {data_handler.collectData(3000, 50)};
+
                 }
                 break;
         }

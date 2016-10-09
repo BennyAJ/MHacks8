@@ -21,6 +21,7 @@ public class Session {
     }
 
     public Session(int d, int m, int y, int get_routine, Trial[] get_trials){
+        trials = new Trial[get_trials.length];
         day = d;
         month = m;
         year = y;
@@ -38,5 +39,10 @@ public class Session {
 
         trials = new Trial[get_trials.size()];
         get_trials.toArray(trials);
+    }
+
+    public String to_string(){
+        return "(Session) day = " + String.valueOf(day) + " month = " + String.valueOf(month) +
+                " year = " + year + " routine = " + routine + "\n";
     }
 }

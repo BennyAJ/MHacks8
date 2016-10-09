@@ -1,9 +1,15 @@
 package brbsolutions.myo_muscle;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
 import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 import emgvisualizer.model.RawDataPoint;
 import emgvisualizer.model.Sensor;
@@ -33,10 +39,19 @@ public class Data_Handler {
     private int elapsedTime;
     private int collectionTime;
 
+    private Context context;
+    private DatabaseHelper databaseHelper;
+    private Calendar calendar;
+
     // General class for processing and saving data from the myo armband
-    public Data_Handler() {
+    public Data_Handler(Context context) {
         this.sensor = MySensorManager.getInstance().getMyo();
         this.handler = new Handler();
+
+        this.context = context;
+
+        databaseHelper = new DatabaseHelper(context);
+        calendar = Calendar.getInstance();
 
         elapsedTime = 0;
 
@@ -48,10 +63,18 @@ public class Data_Handler {
                 int index = elapsedTime / sampleDelay;
                 rawData[index] = currentPoint;
 
+
                 // Add to elapsedTime and repeat if needed
                 elapsedTime += sampleDelay;
-                if (elapsedTime < collectionTime)
+                if (elapsedTime < collectionTime) {
                     handler.postDelayed(dataCollector, sampleDelay);
+                }
+                else {
+                    Trial[] tempTrial = {new Trial(0, rawData)};
+                    ArrayList<RawDataPoint> printList = new ArrayList<RawDataPoint>(Arrays.asList(rawData));
+                    RawDataPoint.printList(printList);
+                    databaseHelper.storeSession(packageSessionData(0, tempTrial));
+                }
             }
         };
 
@@ -64,6 +87,10 @@ public class Data_Handler {
     public void onSensorUpdatedEvent(SensorUpdateEvent event) {
         if (!event.getSensor().getName().contentEquals(sensor.getName())) return;
         this.currentPoint = event.getDataPoint();
+        Log.d("Is this even polling?", "SI POOP");
+        if (currentPoint == null) {
+            Log.d("Null?", "YES BOOTY");
+        }
     }
 
     public static float getAverageMagnitude(float[] values) {
@@ -76,7 +103,7 @@ public class Data_Handler {
     }
 
     // Runs dataCollector for milliseconds and returns an array of the samples taken
-    public RawDataPoint[] collectData(int milliseconds, int sampleDelay) {
+    public Trial collectData(int milliseconds, int sampleDelay) {
         this.collectionTime = milliseconds;
         this.sampleDelay = sampleDelay;
 
@@ -87,6 +114,13 @@ public class Data_Handler {
         handler.post(dataCollector);
         // Reset elapsed time when data is done collecting
         elapsedTime = 0;
-        return rawData;
+        return (new Trial(0, rawData));
+    }
+
+    public Session packageSessionData(int routine, Trial[] trials) {
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        return (new Session(day, month, year, 0, trials));
     }
 }

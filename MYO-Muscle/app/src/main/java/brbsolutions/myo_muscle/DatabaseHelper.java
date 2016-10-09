@@ -144,6 +144,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Cursor c = db.rawQuery("SELECT MAX(" + TrialContract.TrialEntry.column_key +
                     ") FROM " + TrialContract.TrialEntry.table_name, null);
 
+            c.moveToFirst();
             int index = c.getInt(0);
             storeDataPoints(trials[i].data, index);
 
@@ -221,6 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT MAX(" + SessionContract.SessionEntry.column_key +
             ") FROM " + SessionContract.SessionEntry.table_name, null);
 
+        c.moveToFirst();
         int index = c.getInt(0);
 
         c.close();

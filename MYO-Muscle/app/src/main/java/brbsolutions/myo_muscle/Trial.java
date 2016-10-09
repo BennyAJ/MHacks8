@@ -19,13 +19,18 @@ public class Trial {
     }
 
     public Trial(int get_step, RawDataPoint[] get_data){
+        data = new RawDataPoint[get_data.length];
         step = get_step;
         System.arraycopy(get_data, 0, data, 0, get_data.length);
     }
 
-    public Trial(Cursor c, ArrayList<RawDataPoint> rdps){
-        step = c.getInt(c.getColumnIndexOrThrow(TrialContract.TrialEntry.column_step));
-        data = new RawDataPoint[rdps.size()];
-        rdps.toArray(data);
+        public Trial(Cursor c, ArrayList<RawDataPoint> rdps){
+            step = c.getInt(c.getColumnIndexOrThrow(TrialContract.TrialEntry.column_step));
+            data = new RawDataPoint[rdps.size()];
+            rdps.toArray(data);
+        }
+
+    public String to_string(){
+        return "(Trial) step = " + step + "\n";
     }
 }
