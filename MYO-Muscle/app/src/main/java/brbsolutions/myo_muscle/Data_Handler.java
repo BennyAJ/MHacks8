@@ -3,10 +3,13 @@ package brbsolutions.myo_muscle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -77,7 +80,7 @@ public class Data_Handler extends AppCompatActivity{
                     ArrayList<RawDataPoint> printList = new ArrayList<RawDataPoint>(Arrays.asList(rawData));
                     RawDataPoint.printList(printList);
 
-                    //databaseHelper.storeSession(packageSessionData(0, tempTrial));
+                    databaseHelper.storeSession(packageSessionData(0, tempTrial));
                 }
             }
         };
@@ -147,7 +150,38 @@ public class Data_Handler extends AppCompatActivity{
         return (new Session(day, month, year, 0, trials));
     }
 
+    public DataPoint generateGraphPoint(ArrayList<RawDataPoint> raw, float index) {
+        DataPoint point;
+        float[] magnitudes = new float[raw.size()];
+
+        for(int i = 0; i < raw.size(); i++) {
+            RawDataPoint currentPoint = raw.get(i);
+            float[] channels = currentPoint.getValues();
+            magnitudes[i] = getAverageMagnitude(channels);
+        }
+        float overallMagnitude = getAverageMagnitude(magnitudes);
+        point = new DataPoint(overallMagnitude, index);
+        return point;
+    }
+
+    public LineGraphSeries<DataPoint> generateGraph(ArrayList<DataPoint> points) {
+        LineGraphSeries<DataPoint> graph = new LineGraphSeries<DataPoint>();
+        for(int i = 0; i < points.size(); i++) {
+            graph.appendData(points.get(i), false, points.size(), false);
+        }
+        return graph;
+    }
+
+    public void storeSession(Session session) {
+        databaseHelper.storeSession(session);
+    }
+
     public RawDataPoint getCurrentPoint() {
         return currentPoint;
     }
+
+    public RawDataPoint[] getRawData() {
+        return rawData;
+    }
+
 }
