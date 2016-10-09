@@ -16,20 +16,23 @@ import emgvisualizer.model.RawDataPoint;
  */
 public class Trial {
     public int step;
+    public int id;
     public RawDataPoint[] data;
 
     public Trial(){
-        step = 0;
+        step = id = 0;
     }
 
     public Trial(int get_step, RawDataPoint[] get_data){
         data = new RawDataPoint[get_data.length];
         step = get_step;
+        id = 0;
         System.arraycopy(get_data, 0, data, 0, get_data.length);
     }
 
     public Trial(Cursor c, ArrayList<RawDataPoint> rdps){
         step = c.getInt(c.getColumnIndexOrThrow(TrialContract.TrialEntry.column_step));
+        id = c.getInt(c.getColumnIndexOrThrow(TrialContract.TrialEntry.column_key));
         data = new RawDataPoint[rdps.size()];
         rdps.toArray(data);
     }

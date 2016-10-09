@@ -17,11 +17,12 @@ public class Session {
     public int year;
 
     public int routine;
+    public int id;
 
     public Trial[] trials;
 
     public Session(){
-        day = month = year = 0;
+        day = month = year = id = routine = 0;
     }
 
     public Session(int d, int m, int y, int get_routine, Trial[] get_trials){
@@ -40,6 +41,7 @@ public class Session {
         month = c.getInt(c.getColumnIndexOrThrow(SessionContract.SessionEntry.column_month));
         year = c.getInt(c.getColumnIndexOrThrow(SessionContract.SessionEntry.column_year));
         routine = c.getInt(c.getColumnIndexOrThrow(SessionContract.SessionEntry.column_routine));
+        id = c.getInt(c.getColumnIndexOrThrow(SessionContract.SessionEntry.column_key));
 
         trials = new Trial[get_trials.size()];
         get_trials.toArray(trials);

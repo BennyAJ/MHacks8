@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  */
 public final class RoutineContract {
     public static String init_table = "CREATE TABLE " + RoutineEntry.table_name + " ( " +
-            RoutineEntry.column_name + " TEXT, " +
+            RoutineEntry.column_name + " TEXT UNIQUE, " +
             RoutineEntry.column_procedure + " TEXT, " +
             RoutineEntry.column_steps + " INT, " +
             RoutineEntry.column_key + " INTEGER PRIMARY KEY );";

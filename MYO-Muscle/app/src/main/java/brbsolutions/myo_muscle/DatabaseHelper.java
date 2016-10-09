@@ -28,9 +28,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DataPointContract.init_table);
         db.execSQL(RoutineContract.init_table);
         db.execSQL(SessionContract.init_table);
-
-        Routine hackerTests = new Routine("Hacker Ergonomics", "Clench fist:3", 1);
-        storeRoutine(hackerTests);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -185,7 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(RoutineContract.RoutineEntry.column_name, r.name);
         cv.put(RoutineContract.RoutineEntry.column_procedure, r.procedure);
 
-        db.insert(RoutineContract.RoutineEntry.table_name, null, cv);
+        db.replace(RoutineContract.RoutineEntry.table_name, null, cv);
 
         db.close();
     }

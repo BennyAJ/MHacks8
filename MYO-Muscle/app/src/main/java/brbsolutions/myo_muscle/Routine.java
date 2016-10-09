@@ -62,10 +62,14 @@ public class Routine {
         DatabaseHelper dbh = new DatabaseHelper(context);
         SQLiteDatabase db = dbh.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT COUNT(" + SessionContract.SessionEntry.column_routine +
-                                                " == " + String.valueOf(id) + ")", null);
+                                                " == " + String.valueOf(id) + ") FROM " +
+                                                SessionContract.SessionEntry.table_name, null);
         c.moveToFirst();
         int sessions = c.getInt(0);
 
+        c.close();
+        db.close();
+        dbh.close();
 
         if(steps == 1) {
             ((TextView) layout.findViewById(R.id.routine_step_target)).setText("1 Step");

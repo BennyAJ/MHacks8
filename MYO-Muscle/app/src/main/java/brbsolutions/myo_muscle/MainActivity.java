@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.provider.ContactsContract;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             "Thalmic Myo",
             "Search for Myo",
             "Control Panel",
+            "Run Tests",
             "View History"};
 
     /** Array of icons reference ID, -1 if a divider */
@@ -47,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
             -1,
             R.drawable.ic_magnify_grey600_24dp,
             R.drawable.ic_myo_grey600_24dp,
-            R.drawable.ic_action};
+            R.drawable.ic_action,
+            R.drawable.ic_toc_black_48dp};
 
     /** Constant for Home menu position */
     private static final int POSIT_HOME = 1;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     /** Constant for Graph menu position */
     private static final int POSIT_GRAPH = 5;
 
+    private static final int POSIT_HISTORY = 6;
     /** REMOVE THIS LATER */
     private Data_Handler data_handler;
     /** App Toolbar */
@@ -141,8 +145,12 @@ public class MainActivity extends AppCompatActivity {
         changeFragment(new HomeFragment(), POSIT_HOME);
         EventBusProvider.register(this);
 
+        DatabaseHelper dbh = new DatabaseHelper(this);
 
+        Routine hackerTests = new Routine("Hacker Ergonomics", "Clench fist:3", 1);
+        dbh.storeRoutine(hackerTests);
 
+        dbh.close();
     }
 
     /**
@@ -220,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
                     Trial[] tempTrials = {data_handler.collectData(3000, 50)};
 
                 }
+                break;
+            case POSIT_HISTORY:
+                fragment = new HistoryFragment();
                 break;
         }
         if (fragment != null) {
