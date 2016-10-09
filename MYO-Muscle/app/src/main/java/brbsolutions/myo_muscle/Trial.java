@@ -1,6 +1,9 @@
 package brbsolutions.myo_muscle;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+
+import java.util.ArrayList;
 
 import emgvisualizer.model.RawDataPoint;
 
@@ -18,5 +21,11 @@ public class Trial {
     public Trial(int get_step, RawDataPoint[] get_data){
         step = get_step;
         System.arraycopy(get_data, 0, data, 0, get_data.length);
+    }
+
+    public Trial(Cursor c, ArrayList<RawDataPoint> rdps){
+        step = c.getInt(c.getColumnIndexOrThrow(TrialContract.TrialEntry.column_step));
+        data = new RawDataPoint[rdps.size()];
+        rdps.toArray(data);
     }
 }

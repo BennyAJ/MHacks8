@@ -9,7 +9,7 @@ import android.provider.ContactsContract;
 public final class DataPointContract {
     public static String init_table = "CREATE TABLE " + DataPointEntry.table_name + " ( " +
             DataPointEntry.column_trial + " INT, " +
-            DataPointEntry.column_key + " INT UNIQUE AUTO_INCREMENT, " +
+            DataPointEntry.column_key + " INTEGER PRIMARY KEY, " +
             DataPointEntry.column_channel_1 + " REAL , " +
             DataPointEntry.column_channel_2 + " REAL , " +
             DataPointEntry.column_channel_3 + " REAL , " +

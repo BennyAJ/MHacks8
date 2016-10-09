@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.ContactsContract;
 
+import java.util.ArrayList;
+
 import emgvisualizer.model.RawDataPoint;
 
 /**
@@ -42,6 +44,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    RawDataPoint dataPointFromCursor(Cursor c){
+        float values[] = { c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_1)),
+            c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_2)),
+            c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_3)),
+            c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_4)),
+            c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_5)),
+            c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_6)),
+            c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_7)),
+            c.getFloat(c.getColumnIndexOrThrow(DataPointContract.DataPointEntry.column_channel_8)),};
+
+        return new RawDataPoint(1,1,values);
+    }
+
+    public ArrayList<RawDataPoint> getDataPointsFromTrial(int trial){
+        ArrayList<RawDataPoint> rawDataPoints = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + DataPointContract.DataPointEntry.table_name + " WHERE " +
+                DataPointContract.DataPointEntry.column_trial + " == " + String.valueOf(trial), null);
+
+        c.moveToFirst();
+        for(int i = 0; i < c.getCount(); ++i){
+            rawDataPoints.add(dataPointFromCursor(c));
+            if(!c.isAfterLast() && !c.isAfterLast()){
+                c.moveToNext();
+            }
+        }
+        c.close();
+        db.close();
+
+        return rawDataPoints;
+    }
+
     private void storeDataPoints(RawDataPoint[] data, int trialIndex){
         SQLiteDatabase db = getWritableDatabase();
 
@@ -74,6 +110,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<Trial> getTrialsFromSession(int session){
+        ArrayList<Trial> trials = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + TrialContract.TrialEntry.table_name + " WHERE " +
+                TrialContract.TrialEntry.column_session + " == " + String.valueOf(session), null);
+
+        c.moveToFirst();
+        for(int i = 0; i < c.getCount(); ++i){
+            trials.add(new Trial(c, getDataPointsFromTrial(c.getInt(c.getColumnIndexOrThrow(TrialContract.TrialEntry.column_key)))));
+            if(!c.isAfterLast() && !c.isAfterLast()){
+                c.moveToNext();
+            }
+        }
+        c.close();
+        db.close();
+
+        return trials;
+    }
+
+
     private void storeTrials(Trial[] trials, int sessionIndex){
         SQLiteDatabase db = getWritableDatabase();
 
@@ -95,6 +153,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<Routine> getRoutines(){
+        ArrayList<Routine> routines = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + RoutineContract.RoutineEntry.table_name, null);
+
+        c.moveToFirst();
+        for(int i = 0; i < c.getCount(); ++i){
+            routines.add(new Routine(c));
+            if(!c.isAfterLast() && !c.isAfterLast()){
+                c.moveToNext();
+            }
+        }
+        c.close();
+        db.close();
+
+        return routines;
+    }
+
     public void storeRoutine(Routine r){
         SQLiteDatabase db = getWritableDatabase();
 
@@ -108,6 +186,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<Session> getSessionsFromRoutine(int routine){
+        ArrayList<Session> sessions = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + SessionContract.SessionEntry.table_name + " WHERE " +
+            SessionContract.SessionEntry.column_routine + " == " + String.valueOf(routine), null);
+
+        c.moveToFirst();
+        for(int i = 0; i < c.getCount(); ++i){
+            sessions.add(new Session(c, getTrialsFromSession(c.getInt(c.getColumnIndexOrThrow(SessionContract.SessionEntry.column_key)))));
+            if(!c.isAfterLast() && !c.isAfterLast()){
+                c.moveToNext();
+            }
+        }
+        c.close();
+        db.close();
+
+        return sessions;
+    }
+
     public void storeSession(Session s){
         SQLiteDatabase db = getWritableDatabase();
 
@@ -115,7 +214,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(SessionContract.SessionEntry.column_day, s.day);
         cv.put(SessionContract.SessionEntry.column_month, s.month);
         cv.put(SessionContract.SessionEntry.column_year, s.year);
-        cv.put(SessionContract.SessionEntry.column_routine, s.routine.id);
+        cv.put(SessionContract.SessionEntry.column_routine, s.routine);
 
         db.insert(SessionContract.SessionEntry.table_name, null, cv);
 

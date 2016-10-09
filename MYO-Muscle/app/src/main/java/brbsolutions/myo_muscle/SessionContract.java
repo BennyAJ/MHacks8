@@ -12,7 +12,7 @@ public final class SessionContract {
             SessionEntry.column_day + " INT," +
             SessionEntry.column_month + " INT," +
             SessionEntry.column_year + " INT," +
-            SessionEntry.column_key + " INT UNIQUE AUTO_INCREMENT );";
+            SessionEntry.column_key + " INTEGER PRIMARY KEY );";
 
     public static String drop_table = "DROP TABLE IF EXISTS " + SessionEntry.table_name;
 
