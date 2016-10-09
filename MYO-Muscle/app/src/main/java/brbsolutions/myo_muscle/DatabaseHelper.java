@@ -15,7 +15,7 @@ import emgvisualizer.model.RawDataPoint;
  * Created by Alex on 10/8/2016.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int database_version = 1;
+    public static final int database_version = 2;
     public static final String database_file = "myo.db";
 
     public DatabaseHelper(Context context){
@@ -182,7 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(RoutineContract.RoutineEntry.column_name, r.name);
         cv.put(RoutineContract.RoutineEntry.column_procedure, r.procedure);
 
-        db.insert(RoutineContract.RoutineEntry.table_name, null, cv);
+        db.replace(RoutineContract.RoutineEntry.table_name, null, cv);
 
         db.close();
     }
