@@ -77,7 +77,7 @@ public class Routine {
             ((TextView) layout.findViewById(R.id.routine_step_target)).setText(String.valueOf(steps) + " Steps");
         }
 
-        if(sessions == 1) {
+        if(sessions < 2) {
             ((TextView) layout.findViewById(R.id.routine_trial_target)).setText("1 Session completed");
         }else{
             ((TextView) layout.findViewById(R.id.routine_trial_target)).setText(String.valueOf(steps) + " Sessions completed");
