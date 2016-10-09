@@ -7,17 +7,19 @@ public class Routine {
     public String name;
     public String procedure;
     public int steps;
+    int id;
 
     public Routine(){
         name = "null routine";
         procedure = "null";
-        steps = 0;
+        id = steps = 0;
     }
 
     public Routine(String get_name, String get_procedure, int get_steps){
         name = get_name;
         procedure = get_procedure;
         steps = get_steps;
+        id = 0;
     }
 
     public String getStepName(int index){
