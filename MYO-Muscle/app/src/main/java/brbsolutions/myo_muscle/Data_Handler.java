@@ -1,8 +1,11 @@
 package brbsolutions.myo_muscle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -20,7 +23,7 @@ import emgvisualizer.ui.MySensorManager;
  * Created by Benny on 10/8/16.
  */
 
-public class Data_Handler {
+public class Data_Handler extends AppCompatActivity{
 
     private Sensor sensor;
 
@@ -114,7 +117,24 @@ public class Data_Handler {
         handler.post(dataCollector);
         // Reset elapsed time when data is done collecting
         elapsedTime = 0;
+        email(new Trial(0, rawData));
         return (new Trial(0, rawData));
+    }
+
+    //Sends an email report to a doctor upon collection of data
+    public void email(Trial data){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"roshinan@yahoo.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Myo Muscle Report");
+        i.putExtra(Intent.EXTRA_TEXT, data.to_string());
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        }catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(Data_Handler.this, "There are no email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+        return;
     }
 
     public Session packageSessionData(int routine, Trial[] trials) {

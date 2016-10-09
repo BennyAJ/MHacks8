@@ -31,6 +31,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.squareup.otto.Subscribe;
 
 import brbsolutions.myo_muscle.R;
@@ -91,6 +94,7 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
 
         btnConnection.setOnClickListener(this);
         setButtonConnect(controlledSensor.isConnected());
+
         return view;
     }
 

@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.squareup.otto.Subscribe;
 
 import java.text.MessageFormat;
@@ -59,6 +63,8 @@ public class GraphFragment extends Fragment {
 
     /** Reference to sensor graph custom view */
     private SensorGraphView graph;
+    /** Reference to histtory line graph custom view */
+    private GraphView lineGraph;
     /** Reference to sensor */
     private Sensor sensor;
     /** Reference to layout for error message */
@@ -97,8 +103,19 @@ public class GraphFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_graph, container, false);
         graph = (SensorGraphView) view.findViewById(R.id.graph_sensorgraphview);
         errorMessage = (RelativeLayout) view.findViewById(R.id.graph_error_view);
+        lineGraph = (GraphView) view.findViewById(R.id.line_graph);
 
         checkForErrorMessage();
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0,1),
+                new DataPoint(1,7),
+                new DataPoint(2,8),
+                new DataPoint(3,4),
+                new DataPoint(4,9),
+                new DataPoint(5,15)
+        });
+        lineGraph.addSeries(series);
 
         return view;
     }
@@ -111,9 +128,11 @@ public class GraphFragment extends Fragment {
         if (sensor.isMeasuring() && sensor.isConnected()) {
             errorMessage.setVisibility(View.GONE);
             graph.setVisibility(View.VISIBLE);
+            lineGraph.setVisibility(View.VISIBLE);
         } else {
             errorMessage.setVisibility(View.VISIBLE);
             graph.setVisibility(View.GONE);
+            lineGraph.setVisibility(View.GONE);
         }
     }
 
