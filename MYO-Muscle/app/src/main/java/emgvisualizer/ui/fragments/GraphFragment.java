@@ -77,10 +77,11 @@ public class GraphFragment extends Fragment {
 
     private Data_Handler data_handler = new Data_Handler(getActivity());
     private final float triggerAmplitude = 80;
-    private final int collectionTime = 3000;
+    private final int collectionTime = 5000;
     private final int sampleDelay = 50;
+    private int elapsedTime = 0;
     private boolean triggered = false;
-
+    private float[] points;
 
     /**
      * Public constructor to create a new  GraphFragment
@@ -209,24 +210,50 @@ public class GraphFragment extends Fragment {
     @Subscribe
     public void onSensorUpdatedEvent(SensorUpdateEvent event) {
         if (!event.getSensor().getName().contentEquals(sensor.getName())) return;
+        points = new float[sensor.getChannels()];
         for (int i = 0; i < sensor.getChannels(); i++) {
-            if(data_handler.getCurrentPoint() != null)
-                normalized[i] = data_handler.getCurrentPoint().getValues()[i];
-            else
-                normalized[i] = 0;
+            if(data_handler.getCurrentPoint() != null) {
+                normalized[i] = (event.getDataPoint().getValues()[i] - sensor.getMinValue()) / spread;
+                points[i] = data_handler.getCurrentPoint().getValues()[i];
+            }
+            else {
+                points[i] = 0;
+            }
             if(!triggered) {
-                Log.d("FOODOO",String.valueOf(normalized[i]));
-                if (normalized[i] > triggerAmplitude) {
+                Log.d("FOODOO",String.valueOf(points[i]));
+                if (points[i] > triggerAmplitude) {
                     triggered = true;
                     data_handler.collectData(collectionTime, sampleDelay);
                     Log.d("TRIGGER WARNING:", String.valueOf(triggered));
+                    runner = new Runnable() {
+                        long last = System.currentTimeMillis();
+                        long actual;
+
+                        public void run() {
+                            graph.invalidate();
+                            actual = System.currentTimeMillis();
+                            if (actual - last > FRAMERATE_SKIP_MS)
+                                handler.postDelayed(this, actual - last);
+                            else
+                                handler.postDelayed(this, FRAMERATE_SKIP_MS);
+                            last = actual;
+                            elapsedTime += sampleDelay;
+                            if(elapsedTime >= collectionTime) {
+                                graph.setRunning(false);
+                                handler.removeCallbacks(runner);
+                                elapsedTime = 0;
+                            }
+                        }
+                    };
+                    graph.setRunning(true);
+                    handler.post(runner);
+
                 }
             }
         }
-        // Maybe fix this later if I have time
-        //if(triggered) {
-        //    this.graph.addNewDataPoint(normalized);
-        //}
+        if(triggered) {
+            this.graph.addNewDataPoint(normalized);
+        }
     }
 
     /**
@@ -277,5 +304,6 @@ public class GraphFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }

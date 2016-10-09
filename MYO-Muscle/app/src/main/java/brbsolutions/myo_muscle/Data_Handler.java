@@ -73,6 +73,7 @@ public class Data_Handler {
                     Trial[] tempTrial = {new Trial(0, rawData)};
                     ArrayList<RawDataPoint> printList = new ArrayList<RawDataPoint>(Arrays.asList(rawData));
                     RawDataPoint.printList(printList);
+
                     //databaseHelper.storeSession(packageSessionData(0, tempTrial));
                 }
             }
