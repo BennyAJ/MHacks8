@@ -21,6 +21,7 @@ public class Session {
     }
 
     public Session(int d, int m, int y, int get_routine, Trial[] get_trials){
+        trials = new Trial[get_trials.length];
         day = d;
         month = m;
         year = y;
