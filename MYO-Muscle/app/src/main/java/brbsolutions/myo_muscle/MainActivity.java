@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
     /** Constant for Graph menu position */
     private static final int POSIT_GRAPH = 5;
 
-
+    /** REMOVE THIS LATER */
+    private Data_Handler data_handler;
     /** App Toolbar */
     private Toolbar toolbar;
     /** Recycler view reference */
@@ -140,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         changeFragment(new HomeFragment(), POSIT_HOME);
         EventBusProvider.register(this);
 
+
+
     }
 
     /**
@@ -202,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
                 } else {
                     fragment = new ControlFragment();
+                    /** DELETE THIS LATER */
+
                 }
                 break;
             case POSIT_GRAPH:
@@ -210,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
                 } else {
                     fragment = new GraphFragment();
+                    data_handler = new Data_Handler();
+                    EventBusProvider.register(data_handler);
                 }
                 break;
         }
