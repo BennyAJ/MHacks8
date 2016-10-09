@@ -60,6 +60,7 @@ public class Data_Handler {
                 int index = elapsedTime / sampleDelay;
                 rawData[index] = currentPoint;
 
+
                 // Add to elapsedTime and repeat if needed
                 elapsedTime += sampleDelay;
                 if (elapsedTime < collectionTime)

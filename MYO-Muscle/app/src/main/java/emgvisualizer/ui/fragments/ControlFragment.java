@@ -182,8 +182,8 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if (compoundButton.getId() == R.id.control_swc_stream) {
+    public void onCheckedChanged(CompoundButton swcStream, boolean b) {
+        if (swcStream.getId() == R.id.control_swc_stream) {
             if (b)
                 controlledSensor.startMeasurement();
             else
