@@ -56,7 +56,6 @@ public class Data_Handler extends AppCompatActivity{
 
         this.context = context;
 
-        databaseHelper = new DatabaseHelper(context);
         calendar = Calendar.getInstance();
 
         elapsedTime = 0;
@@ -73,14 +72,19 @@ public class Data_Handler extends AppCompatActivity{
                 // Add to elapsedTime and repeat if needed
                 elapsedTime += sampleDelay;
                 if (elapsedTime < collectionTime) {
+                    System.out.println("Continuing Handler");
                     handler.postDelayed(dataCollector, sampleDelay);
                 }
                 else {
+                    System.out.println("Moving to save trial");
                     Trial[] tempTrial = {new Trial(0, rawData)};
                     ArrayList<RawDataPoint> printList = new ArrayList<RawDataPoint>(Arrays.asList(rawData));
                     RawDataPoint.printList(printList);
 
+                    databaseHelper = new DatabaseHelper(MyApp.getContext());
                     databaseHelper.storeSession(packageSessionData(0, tempTrial));
+                    databaseHelper.close();
+                    System.out.println("This reaches the rear end of the data collector");
                 }
             }
         };
@@ -160,7 +164,7 @@ public class Data_Handler extends AppCompatActivity{
             magnitudes[i] = getAverageMagnitude(channels);
         }
         float overallMagnitude = getAverageMagnitude(magnitudes);
-        point = new DataPoint(overallMagnitude, index);
+        point = new DataPoint(index, overallMagnitude);
         return point;
     }
 

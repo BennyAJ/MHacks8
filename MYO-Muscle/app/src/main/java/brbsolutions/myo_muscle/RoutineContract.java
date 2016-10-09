@@ -12,7 +12,7 @@ public final class RoutineContract {
             RoutineEntry.column_steps + " INT, " +
             RoutineEntry.column_key + " INTEGER PRIMARY KEY );";
 
-    public static String drop_table = "DROP TABLE IF EXISTS" + RoutineEntry.table_name;
+    public static String drop_table = "DROP TABLE IF EXISTS " + RoutineEntry.table_name;
 
     public static abstract class RoutineEntry implements BaseColumns {
         public static String table_name = "routine";

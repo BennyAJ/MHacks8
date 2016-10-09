@@ -15,7 +15,7 @@ import emgvisualizer.model.RawDataPoint;
  * Created by Alex on 10/8/2016.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int database_version = 2;
+    public static final int database_version = 4;
     public static final String database_file = "myo.db";
 
     public DatabaseHelper(Context context){
@@ -37,10 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(RoutineContract.drop_table);
         db.execSQL(SessionContract.drop_table);
 
-        db.execSQL(TrialContract.init_table);
-        db.execSQL(DataPointContract.init_table);
-        db.execSQL(RoutineContract.init_table);
-        db.execSQL(SessionContract.drop_table);
+        onCreate(db);
 
     }
 
@@ -209,6 +206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void storeSession(Session s){
+        System.out.println("Storing Session");
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -217,7 +215,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(SessionContract.SessionEntry.column_year, s.year);
         cv.put(SessionContract.SessionEntry.column_routine, s.routine);
 
+        System.out.println("Inserted " + s.to_string());
         db.insert(SessionContract.SessionEntry.table_name, null, cv);
+
 
         Cursor c = db.rawQuery("SELECT MAX(" + SessionContract.SessionEntry.column_key +
             ") FROM " + SessionContract.SessionEntry.table_name, null);
@@ -228,6 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c.close();
         db.close();
 
+        System.out.println("Initiating storage of trials");
         storeTrials(s.trials, index);
     }
 

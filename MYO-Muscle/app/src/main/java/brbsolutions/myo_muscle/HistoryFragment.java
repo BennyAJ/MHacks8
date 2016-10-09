@@ -16,26 +16,21 @@
 package brbsolutions.myo_muscle;
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
+import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import brbsolutions.myo_muscle.R;
 import emgvisualizer.model.RawDataPoint;
-import emgvisualizer.ui.views.SensorGraphView;
 
 /**
  * Fragment for showing home information.
@@ -55,14 +50,16 @@ public class HistoryFragment extends Fragment {
     }
 
     void layerTwo(LinearLayout target, int id){
+        System.out.println("Level 2 triggers");
         DatabaseHelper dbh = new DatabaseHelper(getActivity());
-        ArrayList<Session> sessions = dbh.getSessionsFromRoutine(id);
+        ArrayList<Session> sessions = dbh.getSessionsFromRoutine(0);
         dbh.close();
-
         // Assuming we only graph trial one
         ArrayList<Trial> trials = new ArrayList<>();
 
+        System.out.println("Sessions:" + sessions.size());
         for(int i = 0; i < sessions.size(); ++i){
+            Log.d("Test", "Bong");
             DatabaseHelper dbh2 = new DatabaseHelper(getActivity());
             ArrayList<Trial> tmp = dbh2.getTrialsFromSession(sessions.get(i).id);
             dbh2.close();
@@ -73,10 +70,27 @@ public class HistoryFragment extends Fragment {
         Data_Handler data_handler = new Data_Handler(getActivity());
         ArrayList<DataPoint> graphPoints = new ArrayList<DataPoint>();
         for(int i = 0; i < trials.size(); i++) {
+            Log.d("Trial", String.valueOf(trials.get(i)));
             ArrayList<RawDataPoint> trialPoints = new ArrayList<RawDataPoint>(Arrays.asList(trials.get(i).data));
+            System.out.println(i);
             graphPoints.add(data_handler.generateGraphPoint(trialPoints, i));
         }
+
+        // for testing
+         /* LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
+                new DataPoint[]{
+                new DataPoint(0, 1),
+                new DataPoint(5, 5),
+                new DataPoint(7, 8 )
+        }); */
+
+        //GraphView graph  = (GraphView) getView().findViewById(R.id.historyLineGraph);
+
+        LinearLayout container = (LinearLayout) getView().findViewById(R.id.layout);
         LineGraphSeries<DataPoint> series = data_handler.generateGraph(graphPoints);
+        GraphView graph = new GraphView(getActivity(), null);
+        graph.addSeries(series);
+        container.addView(graph);
 
         // Graphing information goes here
         // Generate your graph and add it to target layout
@@ -87,7 +101,7 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        ScrollView scroll = (ScrollView) view.findViewById(R.id.history_target);
+        LinearLayout linear = (LinearLayout) view.findViewById(R.id.history_target);
 
         DatabaseHelper dbh = new DatabaseHelper(getActivity());
         ArrayList<Routine> routines = dbh.getRoutines();
@@ -100,13 +114,15 @@ public class HistoryFragment extends Fragment {
             theView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
+                    System.out.println("Routine Clicked");
                     int tag = (int)view.getTag();
                     LinearLayout target = (LinearLayout) view.findViewById(R.id.session_target);
+                    target.setOrientation(LinearLayout.VERTICAL);
                     layerTwo(target, tag);
                 }
             });
 
-            scroll.addView(theView);
+            linear.addView(theView);
         }
 
 

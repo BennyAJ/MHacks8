@@ -244,7 +244,7 @@ public class GraphFragment extends Fragment {
                 Log.d("FOODOO",String.valueOf(points[i]));
                 if (points[i] > triggerAmplitude) {
                     triggered = true;
-                    //final Trial[] tempTrial = {data_handler.collectData(collectionTime, sampleDelay)};
+                    final Trial[] tempTrial = {data_handler.collectData(collectionTime, sampleDelay)};
                     Log.d("TRIGGER WARNING:", String.valueOf(triggered));
                     runner = new Runnable() {
                         long last = System.currentTimeMillis();
