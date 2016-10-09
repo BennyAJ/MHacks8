@@ -230,4 +230,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         storeTrials(s.trials, index);
     }
+
 }

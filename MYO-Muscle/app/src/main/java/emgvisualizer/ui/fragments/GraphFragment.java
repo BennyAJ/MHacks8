@@ -40,6 +40,8 @@ import java.util.LinkedList;
 
 import brbsolutions.myo_muscle.Data_Handler;
 import brbsolutions.myo_muscle.R;
+import brbsolutions.myo_muscle.Session;
+import brbsolutions.myo_muscle.Trial;
 import emgvisualizer.model.EventBusProvider;
 import emgvisualizer.model.RawDataPoint;
 import emgvisualizer.model.Sensor;
@@ -242,7 +244,7 @@ public class GraphFragment extends Fragment {
                 Log.d("FOODOO",String.valueOf(points[i]));
                 if (points[i] > triggerAmplitude) {
                     triggered = true;
-                    data_handler.collectData(collectionTime, sampleDelay);
+                    //final Trial[] tempTrial = {data_handler.collectData(collectionTime, sampleDelay)};
                     Log.d("TRIGGER WARNING:", String.valueOf(triggered));
                     runner = new Runnable() {
                         long last = System.currentTimeMillis();
@@ -261,7 +263,10 @@ public class GraphFragment extends Fragment {
                             if(elapsedTime >= (collectionTime * (.63f))) {
                                 graph.setRunning(false);
                                 handler.removeCallbacks(runner);
+                                //Session databaseFile = data_handler.packageSessionData(0, tempTrial);
+                                //data_handler.storeSession(databaseFile);
                                 elapsedTime = 0;
+
                             }
                         }
                     };
