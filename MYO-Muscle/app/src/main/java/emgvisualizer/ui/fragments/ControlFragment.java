@@ -59,7 +59,7 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
     /** Reference to Button to trigger connection */
     private Button btnConnection;
     /** Reference to Switch to trigger measuring */
-    private Switch swcStream;
+    private CompoundButton swcStream;
     /** Reference to Seekbar for streaming speed */
     private SeekBar skbRatio;
 
@@ -83,7 +83,7 @@ public class ControlFragment extends Fragment implements View.OnClickListener, C
         btnConnection = (Button) view.findViewById(R.id.control_btn_connect);
         txtSensorName = (TextView) view.findViewById(R.id.control_sensor_name);
         txtSensorStatus = (TextView) view.findViewById(R.id.control_sensor_status);
-        swcStream = (Switch) view.findViewById(R.id.control_swc_stream);
+        swcStream = (CompoundButton ) view.findViewById(R.id.control_swc_stream);
         swcStream.setOnCheckedChangeListener(this);
 
         txtSensorName.setText(controlledSensor.getName());
