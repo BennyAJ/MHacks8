@@ -20,16 +20,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TrialContract.init_table);
         db.execSQL(DataPointContract.init_table);
         db.execSQL(RoutineContract.init_table);
+        db.execSQL(SessionContract.init_table);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         System.out.println("Upgrading Database");
         db.execSQL(TrialContract.drop_table);
         db.execSQL(DataPointContract.drop_table);
-        db.execSQL(RoutineContract.init_table);
+        db.execSQL(RoutineContract.drop_table);
+        db.execSQL(SessionContract.drop_table);
 
         db.execSQL(TrialContract.init_table);
         db.execSQL(DataPointContract.init_table);
         db.execSQL(RoutineContract.init_table);
+        db.execSQL(SessionContract.drop_table);
+
     }
 }
