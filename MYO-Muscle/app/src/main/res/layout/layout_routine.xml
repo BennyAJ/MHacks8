@@ -5,27 +5,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="0dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/routine_title_target"
+            android:textSize="32dp"
             android:text="Undefined Routine" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="-5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text = "0 steps"
-            android:id="@+id/routine_step_target"/>
+            android:id="@+id/routine_step_target"
+            android:textSize="24dp"
+            android:layout_marginRight="16dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0 Trials"
-            android:id="@+id/routine_trial_target"/>
+            android:id="@+id/routine_trial_target"
+            android:textSize="24dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
