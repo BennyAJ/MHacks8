@@ -27,9 +27,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import brbsolutions.myo_muscle.R;
+import emgvisualizer.model.RawDataPoint;
+import emgvisualizer.ui.views.SensorGraphView;
 
 /**
  * Fragment for showing home information.
@@ -62,6 +68,15 @@ public class HistoryFragment extends Fragment {
             dbh2.close();
             trials.add(tmp.get(0));
         }
+
+        //This is the stuff needed to make the graph
+        Data_Handler data_handler = new Data_Handler(getActivity());
+        ArrayList<DataPoint> graphPoints = new ArrayList<DataPoint>();
+        for(int i = 0; i < trials.size(); i++) {
+            ArrayList<RawDataPoint> trialPoints = new ArrayList<RawDataPoint>(Arrays.asList(trials.get(i).data));
+            graphPoints.add(data_handler.generateGraphPoint(trialPoints, i));
+        }
+        LineGraphSeries<DataPoint> series = data_handler.generateGraph(graphPoints);
 
         // Graphing information goes here
         // Generate your graph and add it to target layout
